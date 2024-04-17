@@ -1,0 +1,94 @@
+@font-face {
+font-family: 'Pretendard-Regular';
+src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
+font-weight: 400;
+font-style: normal;
+}
+* {
+box-sizing: border-box;
+font-family: 'Pretendard-Regular';
+}
+h1 {
+    margin: 0;
+    font-size: 25px;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+button,input,select,textarea {
+    background-color: transparent;
+    border: 0;
+}
+a,button {
+    cursor: pointer;
+}
+button {
+    padding: 0;
+}
+input:focus {
+    outline: none;
+    box-shadow: none;
+}
+ul,ol {
+    padding-left: 0;
+    list-style: none;
+}
+address {
+    font-style: normal;
+}
+/**/
+body {
+    background-color: #d8dff6;
+}
+#container {
+    width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+}
+#todo-list>li {
+    cursor: pointer;
+    padding: 20px 0;
+    border-bottom: 1px solid #e7e7e7;
+    position: relative;
+}
+#todo-list>li.done {
+    color: lightgray;
+    text-decoration: line-through;
+}
+#todo-list>li>span {
+    background-color: black;
+    position: absolute;
+    right: 5px;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    text-align: center;
+    line-height: 20px;
+    font-size: 10px;
+}
+
+#todo-form input[name="todo"]{
+    background-color: #f5f7ff;
+    padding: 15px;
+    display: block;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+#todo-form input[type="submit"]{
+    background-color: #5f5f5f;
+    color: #fff;
+    display: block;
+    width: 100%;
+    line-height: 30px;
+    border-radius: 10px;
+}
