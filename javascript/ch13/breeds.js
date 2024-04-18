@@ -22,7 +22,7 @@ function displayDogs(item){
 }
 
 window.addEventListener('load',function(){
-     // 강아지 사진 뿌리기
+    // 강아지 사진 뿌리기
     request1.open('get',apiRandomDogs)
     request1.addEventListener('load',function(){
         const response = JSON.parse(request1.response)
