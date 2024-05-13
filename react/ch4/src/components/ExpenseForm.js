@@ -1,6 +1,6 @@
 import './ExpenseForm.css'
 
-const ExpenseForm = ({charge, amount, handleCharge, handleAmount, handleSubmit}) => {
+const ExpenseForm = ({charge, amount, handleCharge, handleAmount, handleSubmit, edit}) => {
     return(
      <form onSubmit={handleSubmit}>
         <div className="form-center">
@@ -31,7 +31,7 @@ const ExpenseForm = ({charge, amount, handleCharge, handleAmount, handleSubmit})
             <button 
                 type="submit" 
                 className="btn"
-            >제출</button>
+            >{edit? "수정" : "제출"}</button>
         </div>
      </form>
     )
