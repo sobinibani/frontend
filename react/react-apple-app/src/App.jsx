@@ -1,24 +1,36 @@
+import { Outlet, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
-import './App.css'
-import Nav from './components/Nav'
-import Banner from './components/Banner'
 
-function App() {
-  return (
+import './App.css'
+import Nav from '../../components/Nav'
+import LoginPage from "./pages/LoginPage";
+import MainPage from "./pages/MainPage";
+import DetailPage from "./pages/DetailPage";
+import SearchPage from "./pages/SearchPage";
+
+const Layout = () => {
+  return(
     <>
-      <Container>
-        <Nav/>
-        <Banner></Banner>
-      </Container>
+      <Nav/>
+      <Outlet/>
     </>
   )
 }
 
-const Container = styled.main`
-  position: relative;
-  display: block;
-  top: 70px;
-  padding: 0 calc(3.5vw + 5px);
-`
+function App() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Layout/>}>
+          <Route index element={<LoginPage/>}/>
+          <Route path='main' element={<MainPage/>}/>
+          <Route path=':movieId' element={<DetailPage/>}/>
+          <Route path='search' element={<SearchPage/>}/>
+        </Route>
+      </Routes>
+    </>
+  )
+}
+
 
 export default App
