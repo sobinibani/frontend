@@ -1,0 +1,34 @@
+body {}
+
+.app {
+  text-align: center;
+}
+
+input{
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #d3d3d3;
+  margin-right: 10px;
+}
+.btn{
+  background-color: gray;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 15px;
+}
+
+
+.photo-wrap {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 50px auto;
+}
+
+.photo-wrap img {
+  width: 48%;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
