@@ -2,7 +2,7 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 
 import './App.css'
-import Nav from '../../components/Nav'
+import Nav from './components/Nav'
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import DetailPage from "./pages/DetailPage";

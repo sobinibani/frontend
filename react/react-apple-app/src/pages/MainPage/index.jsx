@@ -9,7 +9,6 @@ const MainPage = () => {
     return (
       <div>
         <Container>
-            <Nav/>
             <Banner/>
             <Row title='Trending Now' id='TN' fetchUrl={requests.fetchTrending}/>
             <Row title='Top Rated' id='TR' fetchUrl={requests.fetchTopRated}/>
