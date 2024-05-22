@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { json, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import {getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut} from 'firebase/auth';
+import app from '../firebase'
+
+
 
 const Nav = () => {
     const [show, setShow] = useState('false');
 
     const [searchValue, setSearchValue] = useState('');
     const navigate = useNavigate();
+    const {pathname} = useLocation();
+
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const [userData, setUserData] = 
+    useState(localStorage.getItem('userData')? JSON.parse(localStorage.getItem('userData')): {});
 
     const listener = () => {
         if(window.scrollY > 50){
@@ -15,6 +26,16 @@ const Nav = () => {
             setShow('false')
         }
     }
+
+    useEffect(()=>{
+        onAuthStateChanged(auth, (user)=> {
+            if(!user){ // 로그아웃 상태
+                navigate('/');
+            }else if(user && pathname === '/'){ // 로그인상태 && 로그인 페이지로 가려고할때만 main으로 이동시키기
+                navigate('/main');
+            }
+        })
+    },[auth, navigate, pathname])
     
     useEffect(()=>{
         window.addEventListener('scroll',listener)
@@ -28,6 +49,29 @@ const Nav = () => {
         navigate(`/search?q=${e.target.value}`)
     }
 
+    const handleAuth = () => {
+        signInWithPopup(auth, provider)
+        .then((result)=>{   
+            console.log(result);
+            setUserData(result.user);
+            localStorage.setItem('userData', JSON.stringify(result.user))
+        })
+        .catch((error)=>{
+            alert(error.message);
+        })
+    }
+
+    const handleLogOut = () => {
+        signOut(auth)
+        .then(()=>{
+            setUserData({});
+            localStorage.removeItem('userData');
+        })
+        .catch((error)=>{
+            alert(error);
+        })
+    }
+
     return (
         <NavWrapper show={show}>
             <Logo>
@@ -38,17 +82,73 @@ const Nav = () => {
                 ></img>
             </Logo>
 
-            <Input
-                type="text"
-                className="nav_input"
-                placeholder="영화를 검색해주세요."
-                value={searchValue}
-                onChange={handleChange}
-            />
-            <Login>로그인</Login>
+            {pathname === "/" ? (
+                <Login
+                    onClick={handleAuth}
+                >로그인</Login>
+            ) : (
+                <Input
+                    type="text"
+                    className="nav_input"
+                    placeholder="영화를 검색해주세요."
+                    value={searchValue}
+                    onChange={handleChange}
+                />
+            )}
+
+            {pathname !== "/" ? 
+            <SignOut>
+                <UserImg src={userData.photoURL} alt={userData.displayName} />
+                <DropDown>
+                    <span
+                        onClick={handleLogOut}
+                    >Sign Out</span>
+                </DropDown>
+            </SignOut>
+            : null
+            }
+
         </NavWrapper>
     )
 }
+
+const UserImg = styled.img`
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+`
+const DropDown = styled.div`
+    position: absolute;
+    top: 48px;
+    right:0;
+    background: rgb(19, 19, 19);
+    border: 1px solid rgba(151,151,151,0.34)
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0/ 50%) 0px 0px 18px 0px;
+    padding: 10px;
+    font-size:14px;
+    letter-spacing: 3px;
+    width: 100px;
+    opacity:0;
+`
+
+const SignOut = styled.div`
+    position: relative;
+    height: 48px;
+    width: 48px;
+    display:flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+
+    &:hover{
+        ${DropDown}{
+            opacity: 1;
+            transition-duration: 1s;
+        }
+    }
+`
+
 const Input = styled.input`
     position:fixed;
     left:50%;
@@ -68,6 +168,7 @@ const Login = styled.a`
     border: 1px solid #f9f9f9;
     border-radius: 4px;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     &:hover {
         background-color: #f9f9f9;
