@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Budget from './components/Budget';
 import Remaining from './components/Remaining';
-import Income from './components/Income';
+import IncomeTotal from './components/IncomeTotal';
 import ExpenseTotal from './components/ExpenseTotal';
 import ExpenseList from './components/ExpenseList';
 import IncomeList from './components/IncomeList';
@@ -17,7 +17,7 @@ function App() {
         {/* <div className='col-sm'><Budget/></div> */}
         <div className='col-sm'><Remaining/></div>
         <div className='col-sm'><ExpenseTotal/></div>
-        <div className='col-sm'><Income/></div>
+        <div className='col-sm'><IncomeTotal/></div>
       </div>
 
       <h3 className='mt-3'>지출들</h3>

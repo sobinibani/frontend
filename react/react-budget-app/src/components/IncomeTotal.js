@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { AppContext } from '../contexts/AppContext'
 import { formatNumberToWon } from '../utils';
 
-const Income = () => {
+const IncomeTotal = () => {
   const {income} = useContext(AppContext)
   
   const total = income.reduce ((total, item)=>{
@@ -17,4 +17,4 @@ const Income = () => {
   )
 }
 
-export default Income;
+export default IncomeTotal;
