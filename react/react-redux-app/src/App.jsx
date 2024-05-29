@@ -1,13 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from './actions/post';
 
 function App() {
+  const dispatch = useDispatch();
   const counter = useSelector((state)=> state.counter);
   const todos = useSelector((state)=> state.todos);
-  const dispatch = useDispatch();
+  const posts = useSelector((state)=>state.posts);
 
   const [todoValue, setTodoValue] = useState('');
+
+  useEffect(()=>{
+    dispatch(fetchPosts());
+  }, [dispatch])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +28,11 @@ function App() {
 
   return (
     <div className='App'>
+      <div>
+        <ul>
+          {posts.map((post, i) => <li key={i}>{post.title}</li>)}
+        </ul>
+      </div>
       <div>
         <ul>
           {todos.map((todo, index) => <li key={index}>{todo}</li>)}
