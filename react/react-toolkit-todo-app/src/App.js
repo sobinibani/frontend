@@ -1,17 +1,30 @@
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { addTodo, deleteTodo, toggleTodo, editTodo } from './store/todoSlice';
 
 function App() {
   const dispatch = useDispatch();
-  const todos = useSelector(state => state.todos);
-  // console.log(todos);
 
   const [text, setText] = useState('');
   const [editId, setEditId] = useState(null);
   const [editText, setEditText] = useState('');
+  const [tab, setTab] = useState('all');
+
+  const todos = useSelector((state) => {
+    if(tab == 'completed'){
+      return state.todos.filter((todo) => todo.completed);
+    } else if(tab == 'active'){
+      return state.todos.filter((todo) => !todo.completed);
+    } else {
+      return state.todos;
+    }
+  });
+
+  console.log(todos);
+  localStorage.setItem('todolist',JSON.stringify(todos))
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,18 +62,41 @@ function App() {
     }
   }
 
+  const handleTab = (text) => {
+    setTab(text);
+  }
+
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          value={text}
-          onChange={(e)=>{setText(e.target.value)}}
-        />
-        <button type='submit'>Add Todo</button>
-        <ul>
+        <div className='add-todo'>
+          <input
+            type='text'
+            value={text}
+            onChange={(e)=>{setText(e.target.value)}}
+          />
+          <button type='submit' className='btn btn-add'>Add Todo</button>
+        </div>
+
+        <ul className='tab'>
+          <li
+            onClick={()=>handleTab('all')}
+            className={tab == 'all' ? 'on': null}
+          >all</li>
+          <li
+            onClick={()=>handleTab('completed')}
+            className={tab == 'completed' ? 'on': null}
+          >completed</li>
+          <li
+            onClick={()=>handleTab('active')}
+            className={tab == 'active' ? 'on': null}
+          >active</li>
+        </ul>
+        
+        <ul className='todo-list'>
           {todos.map(
-            todo => (
+            (todo) => {
+            return (
               <li key={todo.id}>
                 {todo.id === editId ? 
                   /*수정중*/
@@ -70,8 +106,10 @@ function App() {
                       value={editText} 
                       onChange={(e)=>setEditText(e.target.value)}
                     />
-                    <button onClick={handleEditSave}>save</button>
-                    <button onClick={handleEditCancel}>cancel</button>
+                    <div className='btn-wrap'>
+                      <button onClick={handleEditSave} className='btn'>save</button>
+                      <button onClick={handleEditCancel} className='btn'>cancel</button>
+                    </div>
                   </>
                 : 
                   <>
@@ -83,14 +121,16 @@ function App() {
                     <span>
                       {todo.text}
                     </span>
-                    <button onClick={()=>{
-                      handleEditStart(todo.id, todo.text)
-                    }}>Edit</button>
-                    <button onClick={()=>{handleDelete(todo.id)}}>Delete</button>
+                    <div className='btn-wrap'>
+                      <button onClick={()=>{
+                        handleEditStart(todo.id, todo.text)
+                      }} className='btn'>Edit</button>
+                      <button onClick={()=>{handleDelete(todo.id)}} className='btn'>Delete</button>
+                    </div>
                   </>
                 }
               </li>
-            )
+            )}
           )}
         </ul>
       </form>
