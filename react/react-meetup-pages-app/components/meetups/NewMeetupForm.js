@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import classes from './NewMeetupForm.module.css'
 import Card from '../ui/Card';
 
-const NewMeetupForm = () => {
+const NewMeetupForm = ({router}) => {
   const titleInputRef = useRef();
   const imageInputRef = useRef();
   const addressInputRef = useRef();
@@ -18,8 +18,8 @@ const NewMeetupForm = () => {
     const meetupData = {
       title: enteredTitle,
       image: enteredImage,
-      Address: enteredAddress,
-      Description: enteredDescription,
+      address: enteredAddress,
+      description: enteredDescription,
     }
 
     handleAddMeetup(meetupData)
@@ -29,7 +29,7 @@ const NewMeetupForm = () => {
     const response = await fetch('/api/new-meetup', {
       method: 'POST',
       body: JSON.stringify(enteredMeetupData),
-      header: {
+      headers: {
         'Content-Type' : 'application/json'
       }
     })
@@ -57,15 +57,6 @@ const NewMeetupForm = () => {
             required
             id='image'
             ref={imageInputRef}
-          />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor='address'>주소</label>
-          <input
-            type='text'
-            required
-            id='address'
-            ref={addressInputRef}
           />
         </div>
         <div className={classes.control}>

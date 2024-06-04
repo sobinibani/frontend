@@ -1,10 +1,12 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
+import { MongoClient } from "mongodb";
+import MeetupList from "@/components/meetups/MeetupList";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Home ({ meetups }) {
+  // console.log(props.meetups)
   return (
     <>
       <Head>
@@ -13,9 +15,33 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      
       <main>
-        
+        <MeetupList meetups={meetups}/>
       </main>
     </>
   );
+}
+
+// 이 페이지에 들어왔을때 요청을 매번함 .. ?
+// getStaticProps = 빌드 할때. npm run dev
+// getServerSideProps = 요청시 마다 
+export async function getServerSideProps(){
+  const client = await MongoClient.connect(process.env.MONGO_URI);
+  const db = client.db('meetupDB');
+
+  const meetupsCollection = db.collection('meetups');
+  const meetups = await meetupsCollection.find().toArray();
+  client.close();
+
+  return {
+    props: {
+      meetups: meetups.map((meetup)=>({
+        title: meetup.title,
+        address: meetup.address,
+        image: meetup.image,
+        id: meetup._id.toString()
+      }))
+    }
+  }
 }
