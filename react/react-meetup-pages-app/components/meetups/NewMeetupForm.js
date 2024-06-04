@@ -8,9 +8,39 @@ const NewMeetupForm = () => {
   const addressInputRef = useRef();
   const descriptionInputRef = useRef();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const enteredTitle = titleInputRef.current.value;
+    const enteredImage = imageInputRef.current.value;
+    const enteredAddress = addressInputRef.current.value;
+    const enteredDescription = descriptionInputRef.current.value;
+
+    const meetupData = {
+      title: enteredTitle,
+      image: enteredImage,
+      Address: enteredAddress,
+      Description: enteredDescription,
+    }
+
+    handleAddMeetup(meetupData)
+  }
+
+  const handleAddMeetup = async (enteredMeetupData) => {
+    const response = await fetch('/api/new-meetup', {
+      method: 'POST',
+      body: JSON.stringify(enteredMeetupData),
+      header: {
+        'Content-Type' : 'application/json'
+      }
+    })
+
+    const data = await response.json();
+    console.log(data);
+  }
+
   return (
     <Card>
-      <form className={classes.form}>
+      <form className={classes.form} onSubmit={handleSubmit}>
         <div className={classes.control}>
           <label htmlFor='title'>모임 이름</label>
           <input
